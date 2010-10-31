@@ -7,3 +7,5 @@ p Procedure.do_b(TypeA.new(:baz=>[1,2,3]))
 p Procedure.do_c()
 p Procedure.do_a_error_invalid_id("oh no!!!")
 
+p TypeC.new([])
+

@@ -2,6 +2,7 @@
 require "erb"
 require "active_support/inflector"
 require "active_support/core_ext/array/access"
+require "pp"
 
 class String
   def to_method_name
@@ -49,16 +50,16 @@ module Peto
     end
 
     def each_types
-      @contract["types"].each do |type|
-        yield type.to_class_type, args(@contract[type])
+      @contract["types"].each do |name, args|
+        yield name.to_class_type, args(args)
       end
     end
 
     def each_procedures
-      @contract["procedures"].each do |procedure|
-        yield procedure.to_method_name, args(@contract[procedure]["args"])
-        @contract[procedure]["errors"].each do |error|
-          yield "#{procedure} error #{error}".to_method_name, [arg("message", "string")]
+      @contract["procedures"].each do |name, procedure|
+        yield name.to_method_name, args(procedure["args"])
+        procedure["errors"].each do |error|
+          yield "#{name} error #{error}".to_method_name, [arg("message", "string")]
         end
       end
     end

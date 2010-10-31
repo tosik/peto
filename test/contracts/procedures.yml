@@ -1,23 +1,24 @@
 
 name: procedures
-procedures: [do_a, do_b, do_c]
-types: [type_a, type_b]
 
-type_a: [foo:s32, bar:string, baz:array:s32]
-type_b: [foo:string]
+types:
+  type_a: [foo:s32, bar:string, baz:array:s32]
+  type_b: [foo:string]
+  type_c: [foo:array:string]
 
-do_a:
-  args: [a:s32, b:string, c:type_b]
-  returns: [d:s32, e:type_a]
-  errors: [not found, invalid id]
+procedures:
+  do_a:
+    args: [a:s32, b:string, c:type_b]
+    returns: [d:s32, e:type_a]
+    errors: [not found, invalid id]
 
-do_b:
-  args: [a:type_a]
-  returns: []
-  errors: []
+  do_b:
+    args: [a:type_a]
+    returns: []
+    errors: []
 
-do_c:
-  args: []
-  returns: []
-  errors: []
+  do_c:
+    args: []
+    returns: []
+    errors: []
 

@@ -17,10 +17,12 @@ contract file (foo.yml):
       args: [user:user]
 
 invoke command:
-  % peto foo.yml -o generated.rb
+  % peto foo.yml
 
-use generated.rb:
-  require "generated"
+use foo.rb:
+  require "foo"
+  require "animal"
+  require "user"
 
   cat = Peto::Animal.new(:name => "cat")
   dog = Peto::Animal.new(:name => "dog")

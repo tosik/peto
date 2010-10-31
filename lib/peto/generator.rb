@@ -10,7 +10,7 @@ class String
   end
   def to_class_type
     case self
-    when "s32"
+    when "integer"
       "Fixnum"
     else
       classify
@@ -59,7 +59,7 @@ module Peto
     def each_procedures
       @contract["procedures"].each do |name, procedure|
         yield name.to_method_name, args(procedure["args"])
-        procedure["errors"].each do |error|
+        (procedure["errors"]||[]).each do |error|
           yield "#{name} error #{error}".to_method_name, [arg("message", "string")]
         end
       end

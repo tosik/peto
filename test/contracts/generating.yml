@@ -2,14 +2,14 @@
 name: generating
 
 types:
-  type_a: [foo:s32, bar:string, baz:array:s32]
+  type_a: [foo:integer, bar:string, baz:array:integer]
   type_b: [foo:string]
   type_c: [foo:array:string]
 
 procedures:
   do_a:
-    args: [a:s32, b:string, c:type_b]
-    returns: [d:s32, e:type_a]
+    args: [a:integer, b:string, c:type_b]
+    returns: [d:integer, e:type_a]
     errors: [not found, invalid id]
 
   do_b:

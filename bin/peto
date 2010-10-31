@@ -4,8 +4,6 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require "peto"
 
-ARGV = "./test/contracts/generating.yml".split(" ")
-
 require "optparse"
 options = {}
 OptionParser.new do |opt|

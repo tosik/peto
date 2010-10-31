@@ -17,12 +17,9 @@ if input.nil?
   exit
 end
 
-options[:output] = File.join(File.dirname(input),
-                             File.basename(input, ".yml") + ".rb") if options[:output].nil?
+options[:output] = File.dirname(input) if options[:output].nil?
 
 peto = Peto::Master.new
 peto.load(input)
-open(options[:output],"w") do |file|
-  file.write(peto.generate)
-end
+peto.generate
 

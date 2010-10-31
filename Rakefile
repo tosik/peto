@@ -1,11 +1,6 @@
 require 'rubygems'
 require 'rake'
 
-task :run do
-  sh "ruby -Ilib ./bin/peto test/contracts/generating.yml > examples/generated.rb"
-  sh "ruby -Ilib examples/trial.rb"
-end
-
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|

@@ -1,5 +1,5 @@
 
-name: procedures
+name: generating
 
 types:
   type_a: [foo:s32, bar:string, baz:array:s32]

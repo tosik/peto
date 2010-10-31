@@ -2,11 +2,10 @@
 
 == Usage
 
-installing
-  gem install peto
+installing:
+  % gem install peto
 
-contract file (foo.yml)
-
+contract file (foo.yml):
   name: foo
 
   types:
@@ -17,11 +16,10 @@ contract file (foo.yml)
     set_user:
       args: [user:user]
 
-invoke command
-  peto foo.yml > generated.rb
+invoke command:
+  % peto foo.yml > generated.rb
 
-use generated.rb
-
+use generated.rb:
   require "generated"
 
   cat = Peto::Animal.new(:name => "cat")

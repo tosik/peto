@@ -9,16 +9,16 @@ class TestPeto < Test::Unit::TestCase
 
     context "load(contract yaml file)" do
       setup do
-        @peto.load("test/contracts/loading_test.yml")
+        @peto.load("test/contracts/loading.yml")
       end
       should ".contract returns loaded contract" do
-        assert_equal({ "name" => "loading_test" }, @peto.contract)
+        assert_equal({ "name" => "loading" }, @peto.contract)
       end
     end
 
     context "generate procedures" do
       setup do
-        @peto.load("test/contracts/procedures.yml")
+        @peto.load("test/contracts/generating.yml")
       end
       should "returns string by loaded contract" do
         assert_equal String, @peto.generate.class

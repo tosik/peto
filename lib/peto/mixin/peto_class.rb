@@ -22,5 +22,19 @@ module PetoClass
       result
     }
   end
+
+  def valid?
+    to_hash.each do |key, value|
+      var = instance_variable_get("@#{key}")
+      invalid_type(key, types[key], value) unless value.class == types[key] || value.nil?
+    end
+
+    arrays.each do |array, klass|
+      var = instance_variable_get("@#{array}")
+      invalid_type(array, klass, var.first) unless var.empty? || var.first.class == klass
+    end
+
+    errors.empty?
+  end
 end
 

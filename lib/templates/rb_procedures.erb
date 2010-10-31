@@ -15,6 +15,7 @@ module Peto
       <%- end -%>
 
       set_by_hash(args)
+      raise_errors unless valid?
     end
 
     <%- args.each do |arg| -%>
@@ -27,6 +28,10 @@ module Peto
 
     def types
       {<%= args.map{|arg| ":#{arg[:name]} => #{arg[:type]}"}.join(",") %>}
+    end
+
+    def arrays
+      {<%= args.select{|arg|arg[:array_type]}.map{|arg| ":#{arg[:name]} => #{arg[:array_type]}"}.join(",") %>}
     end
   end
   <%- end -%>
@@ -44,7 +49,7 @@ module Peto
 
       return {
         :procedure => "<%=name%>",
-	:args => {
+        :args => {
           <%- args.each do |arg| -%>
           :<%=arg[:name]%> => hashize(<%=arg[:name]%>),
           <%- end -%>

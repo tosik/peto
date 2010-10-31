@@ -42,11 +42,12 @@ module Peto
     end
 
     def arg(name, type, options={})
-        {
-          :name => name,
-          :type => type.to_class_type,
-          :array_type => options.delete(:array_type) || false,
-        }
+      array_type = options.delete(:array_type)
+      {
+        :name => name,
+        :type => type.to_class_type,
+        :array_type => array_type.nil? ? nil : array_type.to_class_type,
+      }
     end
 
     def each_types

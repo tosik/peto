@@ -4,6 +4,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require "peto"
 
+Version = IO.read(File.join(File.dirname(__FILE__), '..', "VERSION"))
+
 require "optparse"
 options = {}
 OptionParser.new do |opt|

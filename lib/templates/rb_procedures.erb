@@ -1,6 +1,9 @@
-class <%= class_name %>
-  <%- each_procedures do |name, procedure| -%>
-  def <%= name %>(<%= procedure["args"].join(",") %>)
+module Peto
+  class <%= class_name %>
+    <%- each_procedures do |name, args| -%>
+    def <%= name %>(<%= args.join(",") %>)
+    end
+
+    <%- end -%>
   end
-  <%- end -%>
 end

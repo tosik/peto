@@ -2,7 +2,8 @@ require 'rubygems'
 require 'rake'
 
 task :run do
-  sh "ruby -Ilib ./bin/peto test/contracts/loading_test.yml"
+  sh "ruby -Ilib ./bin/peto test/contracts/procedures.yml > examples/generated.rb"
+  sh "ruby -Ilib examples/trial.rb"
 end
 
 begin

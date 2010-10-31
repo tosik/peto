@@ -1,12 +1,10 @@
 
 name: procedures
 procedures: [do_a, do_b, do_c]
-types: [type_a, type_b, type_c]
+types: [type_a, type_b]
 
-type_a:
-  foo:s32
-  bar:string
-  baz:array:s32
+type_a: [foo:s32, bar:string, baz:array:s32]
+type_b: [foo:string]
 
 do_a:
   args: [a:s32, b:string, c:type_b]

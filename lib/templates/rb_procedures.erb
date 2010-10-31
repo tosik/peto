@@ -1,10 +1,44 @@
+require "peto/mixin/peto_class"
+require "peto/mixin/peto_errorable"
+
+module Peto
+  <%- each_types do |name, args| -%>
+  class <%= name %>
+    include PetoClass
+    def initialize(args={})
+      <%- args.each do |arg| -%>
+        <%- if arg[:array] -%>
+      @<%= arg[:name] %> = Array.new # for <%= arg[:type] %>
+        <%- else -%>
+      @<%= arg[:name] %> = <%= arg[:type] %>.new
+        <%- end -%>
+      <%- end -%>
+
+      set_by_hash(args)
+    end
+    <%- args.each do |arg| -%>
+    attr_reader :<%= arg[:name] %>
+    <%- end -%>
+  end
+  <%- end -%>
+end
+
 module Peto
   class <%= class_name %>
+    extend PetoErrorable
     <%- each_procedures do |name, args| -%>
-    def <%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)
+    def self.<%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)
       <%- args.each do |arg| -%>
-      raise "invlaid" unless <%= arg[:name] %>.class == <%= arg[:type] %>
+      invalid_type("<%= arg[:name] %>", <%= arg[:type] %>, <%= arg[:name] %>) unless <%= arg[:name] %>.class == <%= arg[:type] %>
       <%- end -%>
+      raise_errors unless errors.empty?
+
+      print "<%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)"
+      print " => "
+      print [<%- args.each do |arg| -%>
+        <%=arg[:name]%>,
+      <%- end -%>].join(", ")
+      puts
     end
 
     <%- end -%>

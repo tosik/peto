@@ -29,13 +29,27 @@ module Peto
 
 
     def class_name
-      @contract["name"].camelize
+      @contract["name"].to_class_type
     end
 
     def args(string_args)
       string_args.map do |str|
         splitted = str.split(":")
-        { :name => splitted.first, :type => splitted.last.to_class_type}
+        arg(splitted.first, splitted.last, :array => (splitted[1] == "array"))
+      end
+    end
+
+    def arg(name, type, options={})
+        {
+          :name => name,
+          :type => type.to_class_type,
+          :array => options.delete(:array) || false,
+        }
+    end
+
+    def each_types
+      @contract["types"].each do |type|
+        yield type.to_class_type, args(@contract[type])
       end
     end
 
@@ -43,7 +57,7 @@ module Peto
       @contract["procedures"].each do |procedure|
         yield procedure.to_method_name, args(@contract[procedure]["args"])
         @contract[procedure]["errors"].each do |error|
-          yield "#{procedure} error #{error}".to_method_name, [{ :name => "message", :type => "string".to_class_type }]
+          yield "#{procedure} error #{error}".to_method_name, [arg("message", "string")]
         end
       end
     end

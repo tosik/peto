@@ -17,7 +17,7 @@ contract file (foo.yml):
       args: [user:user]
 
 invoke command:
-  % peto foo.yml > generated.rb
+  % peto foo.yml -o generated.rb
 
 use generated.rb:
   require "generated"

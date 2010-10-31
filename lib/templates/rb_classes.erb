@@ -1,0 +1,37 @@
+require "peto/mixin/peto_class"
+
+<%- name = @target[:name].camelize -%>
+<%- args = @target[:args] -%>
+module Peto
+  class <%= name %>
+    include PetoClass
+    def initialize(args={})
+      <%- args.each do |arg| -%>
+        <%- if arg[:array_type] -%>
+      @<%= arg[:name] %> = [] # for <%= arg[:array_type] %>
+        <%- else -%>
+      @<%= arg[:name] %> = nil
+        <%- end -%>
+      <%- end -%>
+
+      set_by_hash(args)
+      raise_errors unless valid?
+    end
+
+    <%- args.each do |arg| -%>
+    attr_reader :<%= arg[:name] %>
+    <%- end -%>
+
+    def members
+      [<%= args.map{|arg| ":#{arg[:name]}"}.join(",") %>]
+    end
+
+    def types
+      {<%= args.map{|arg| ":#{arg[:name]} => #{arg[:type]}"}.join(",") %>}
+    end
+
+    def arrays
+      {<%= args.select{|arg|arg[:array_type]}.map{|arg| ":#{arg[:name]} => #{arg[:array_type]}"}.join(",") %>}
+    end
+  end
+end

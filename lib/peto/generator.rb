@@ -23,12 +23,18 @@ module Peto
     def initialize(contract)
       @contract = contract
     end
+    attr_reader :contract
 
-    def generate(template_filename)
+    def generate_procedure(template_filename)
       erb = ERB.new(IO.read(template_filename), nil, "-")
-      erb.result(binding)
+      { "#{@contract["name"]}" => erb.result(binding) }
     end
 
+    def generate_class(template_filename, type)
+      erb = ERB.new(IO.read(template_filename), nil, "-")
+      @target = {:name => type.first, :args => args(type.second)}
+      { "#{@target[:name]}" => erb.result(binding) }
+    end
 
     def class_name
       @contract["name"].to_class_type

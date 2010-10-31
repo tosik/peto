@@ -9,21 +9,27 @@ class TestPeto < Test::Unit::TestCase
       @peto = Peto::Master.new
     end
 
-    context "load contract yaml file" do
+    context "loads contract yaml file" do
       setup do
         @peto.load("test/contracts/loading.yml")
       end
-      should ".contract returns loaded contract" do
-        assert_equal({ "name" => "loading" }, @peto.contract)
+      context ".contract" do
+        should "return loaded contract" do
+          assert_equal({ "name" => "loading" }, @peto.contract)
+        end
       end
     end
 
-    context "generate procedures" do
+    context "parse procedures" do
       setup do
         @peto.load("test/contracts/generating.yml")
       end
       should "returns string by loaded contract" do
-        assert_equal String, @peto.generate.class
+        assert_equal Hash, @peto.parse.class
+        @peto.parse.each do |name, content|
+          assert_equal String, name.class
+          assert_equal String, content.class
+        end
       end
     end
   end
@@ -32,10 +38,12 @@ class TestPeto < Test::Unit::TestCase
     setup do
       @peto = Peto::Master.new
       @peto.load("test/contracts/generating.yml")
-      @generated = @peto.generate
+      @generated = @peto.parse
     end
-    should "is readable as ruby" do
-      Closed.class_eval(@generated)
+    should "be readable as ruby" do
+      @generated.each do |filepath, content|
+        Closed.class_eval(content)
+      end
       assert_equal({
         :procedure => "do_a",
         :args => {

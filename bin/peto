@@ -3,5 +3,6 @@
 require "peto"
 
 peto = Peto::Master.new
-peto.run(ARGV.first)
+peto.load(ARGV.first)
+puts peto.generate
 

@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 
 task :run do
-  sh "ruby -Ilib ./bin/peto foo.json"
+  sh "ruby -Ilib ./bin/peto test/contracts/loading_test.yml"
 end
 
 begin

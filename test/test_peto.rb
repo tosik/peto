@@ -12,22 +12,15 @@ class TestPeto < Test::Unit::TestCase
         @peto.load("test/contracts/loading_test.yml")
       end
       should ".contract returns loaded contract" do
-        assert_equal({
-          "name" => "loading_test",
-          "procedures" => ["do_a", "do_b", "do_c"],
-          "do_a" => {"args" => ["a","b","c"]},
-          "do_b" => {"args" => ["a"]},
-          "do_c" => {"args" => []},
-        }, @peto.contract)
+        assert_equal({ "name" => "loading_test" }, @peto.contract)
       end
     end
 
-    context "generate" do
+    context "generate procedures" do
       setup do
-        @peto.load("test/contracts/loading_test.yml")
+        @peto.load("test/contracts/procedures.yml")
       end
       should "returns string by loaded contract" do
-        puts @peto.generate
         assert_equal String, @peto.generate.class
       end
     end

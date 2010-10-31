@@ -1,13 +1,3 @@
 
 name: loading_test
-procedures: [do_a, do_b, do_c]
-
-do_a:
-  args: [a, b, c]
-
-do_b:
-  args: [a]
-
-do_c:
-  args: []
 

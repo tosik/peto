@@ -1,14 +1,20 @@
 
 name: procedures
 procedures: [do_a, do_b, do_c]
+types: [type_a, type_b, type_c]
+
+type_a:
+  foo:s32
+  bar:string
+  baz:array:s32
 
 do_a:
-  args: [a, b, c]
-  returns: []
+  args: [a:s32, b:string, c:type_b]
+  returns: [d:s32, e:type_a]
   errors: [not found, invalid id]
 
 do_b:
-  args: [a]
+  args: [a:type_a]
   returns: []
   errors: []
 

@@ -1,7 +1,10 @@
 module Peto
   class <%= class_name %>
     <%- each_procedures do |name, args| -%>
-    def <%= name %>(<%= args.join(",") %>)
+    def <%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)
+      <%- args.each do |arg| -%>
+      raise "invlaid" unless <%= arg[:name] %>.class == <%= arg[:type] %>
+      <%- end -%>
     end
 
     <%- end -%>

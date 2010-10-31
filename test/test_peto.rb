@@ -21,6 +21,7 @@ class TestPeto < Test::Unit::TestCase
         @peto.load("test/contracts/procedures.yml")
       end
       should "returns string by loaded contract" do
+        pp @peto.contract
         puts @peto.generate
         assert_equal String, @peto.generate.class
       end

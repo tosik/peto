@@ -23,5 +23,5 @@ options[:output] = File.dirname(input) if options[:output].nil?
 
 peto = Peto::Master.new
 peto.load(input)
-peto.generate
+peto.generate(options[:output])
 

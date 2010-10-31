@@ -6,7 +6,7 @@ module Peto
   TEMPLATE_DIR = File::dirname(File::expand_path( __FILE__ )) + "/../templates"
   class Master
     def load(filename)
-      @work_dir = File::dirname(filename)
+      @filename = filename
       @contract = YAML.load(IO.read(Pathname(filename)))
     end
     attr_reader :contract
@@ -17,9 +17,9 @@ module Peto
       }.merge!(Generator.new(@contract).generate_procedure(TEMPLATE_DIR + "/rb_procedures.erb"))
     end
 
-    def generate
+    def generate(output_dir=nil)
       parse.each do |name, content|
-        filepath = File.join(@work_dir, "#{name}.rb")
+        filepath = File.join(output_dir||File::dirname(@filename), "#{name}.rb")
         write(filepath, content)
       end
     end

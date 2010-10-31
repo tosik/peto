@@ -1,6 +1,40 @@
 = peto
 
-Description goes here.
+== Usage
+
+installing
+  gem install peto
+
+contract file (foo.yml)
+
+  name: foo
+
+  types:
+    animal: [name:string]
+    user: [name:string, age:integer, animals:array:animal]
+
+  procedures:
+    set_user:
+      args: [user:user]
+
+invoke command
+  peto foo.yml > generated.rb
+
+use generated.rb
+
+  require "generated"
+
+  cat = Peto::Animal.new(:name => "cat")
+  dog = Peto::Animal.new(:name => "dog")
+  user = Peto::User.new(:name => "alice", :age => 23, :animals=>[cat, dog])
+
+  p Peto::Foo.set_user(user) # => { :procedure=>"set_user",
+                                    :args=>{ :user=>{ :name=>"alice",
+                                                      :age=>23,
+                                                      :animals=>[
+                                                        Peto::Animal({:name=>"cat"}),
+                                                        Peto::Animal({:name=>"dog"})
+                                                      ]}}}
 
 == Note on Patches/Pull Requests
  

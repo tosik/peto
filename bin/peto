@@ -4,7 +4,22 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require "peto"
 
+ARGV = "./test/contracts/generating.yml".split(" ")
+
+require "optparse"
+options = {}
+OptionParser.new do |opt|
+  opt.on("-o output") {|value| options[:output] = value }
+  opt.parse!(ARGV)
+end
+input = ARGV.pop
+options[:output] = File.basename(input, ".yml") + ".rb" if options[:output].nil?
+puts "already exist" if File.exist?(options[:output])
+
 peto = Peto::Master.new
-peto.load(ARGV.first)
-puts peto.generate
+peto.load(input)
+open(options[:output],"w") do |file|
+  file.write(peto.generate)
+end
+puts "create #{options[:output]}"
 

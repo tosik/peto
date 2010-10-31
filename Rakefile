@@ -9,8 +9,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "peto"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{contract code generator}
+    gem.description = %Q{contract code generator for multi-language}
     gem.email = "toshi.hirooka@gmail.com"
     gem.homepage = "http://github.com/tosik/peto"
     gem.authors = ["Toshiyuki Hirooka"]

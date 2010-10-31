@@ -1,0 +1,6 @@
+class <%= class_name %>
+  <%- each_procedures do |name, procedure| -%>
+  def <%= name %>(<%= procedure["args"].join(",") %>)
+  end
+  <%- end -%>
+end

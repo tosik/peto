@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'rake'
 
+task :run do
+  sh "ruby -Ilib ./bin/peto foo.json"
+end
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|

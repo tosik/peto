@@ -1,0 +1,7 @@
+#!/bin/ruby
+
+require "peto"
+
+peto = Peto::Master.new
+peto.run(ARGV.first)
+

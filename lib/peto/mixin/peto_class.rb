@@ -13,11 +13,14 @@ module PetoClass
   end
 
   def inspect
+    "#{self.class}(#{to_hash})"
+  end
+
+  def to_hash
     inners = members.inject({}) {|result, member|
       result[member] = instance_variable_get("@#{member}")
       result
     }
-    "#{self.class}(#{inners})"
   end
 end
 

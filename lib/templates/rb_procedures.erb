@@ -42,12 +42,21 @@ module Peto
       <%- end -%>
       raise_errors unless errors.empty?
 
-      print "<%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)"
-      print " => "
-      print [<%= args.map{|arg| "#{arg[:name]}"}.join(",")%>].map{|n|n.inspect}.join(", ")
-      puts
+      return {
+        :procedure => "<%=name%>",
+	:args => {
+          <%- args.each do |arg| -%>
+          :<%=arg[:name]%> => hashize(<%=arg[:name]%>),
+          <%- end -%>
+        }
+      }
     end
 
     <%- end -%>
+
+    def self.hashize(var)
+      return var if [Fixnum, String].include?(var.class)
+      var.to_hash
+    end
   end
 end

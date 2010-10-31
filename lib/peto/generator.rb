@@ -1,6 +1,7 @@
 
 require "erb"
 require "active_support/inflector"
+require "active_support/core_ext/array/access"
 
 class String
   def to_method_name
@@ -35,7 +36,7 @@ module Peto
     def args(string_args)
       string_args.map do |str|
         splitted = str.split(":")
-        arg(splitted.first, splitted.last, :array => (splitted[1] == "array"))
+        arg(splitted.first, splitted.second, :array_type => splitted.third)
       end
     end
 
@@ -43,7 +44,7 @@ module Peto
         {
           :name => name,
           :type => type.to_class_type,
-          :array => options.delete(:array) || false,
+          :array_type => options.delete(:array_type) || false,
         }
     end
 

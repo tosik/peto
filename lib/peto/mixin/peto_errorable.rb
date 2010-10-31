@@ -4,7 +4,7 @@ module PetoErrorable
   end
 
   def add_error(error)
-    @errors << error
+    errors << error
   end
 
   def raise_errors

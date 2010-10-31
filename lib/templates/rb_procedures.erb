@@ -7,18 +7,27 @@ module Peto
     include PetoClass
     def initialize(args={})
       <%- args.each do |arg| -%>
-        <%- if arg[:array] -%>
-      @<%= arg[:name] %> = Array.new # for <%= arg[:type] %>
+        <%- if arg[:array_type] -%>
+      @<%= arg[:name] %> = [] # for <%= arg[:array_type] %>
         <%- else -%>
-      @<%= arg[:name] %> = <%= arg[:type] %>.new
+      @<%= arg[:name] %> = nil
         <%- end -%>
       <%- end -%>
 
       set_by_hash(args)
     end
+
     <%- args.each do |arg| -%>
     attr_reader :<%= arg[:name] %>
     <%- end -%>
+
+    def members
+      [<%= args.map{|arg| ":#{arg[:name]}"}.join(",") %>]
+    end
+
+    def types
+      {<%= args.map{|arg| ":#{arg[:name]} => #{arg[:type]}"}.join(",") %>}
+    end
   end
   <%- end -%>
 end
@@ -35,9 +44,7 @@ module Peto
 
       print "<%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)"
       print " => "
-      print [<%- args.each do |arg| -%>
-        <%=arg[:name]%>,
-      <%- end -%>].join(", ")
+      print [<%= args.map{|arg| "#{arg[:name]}"}.join(",")%>].map{|n|n.inspect}.join(", ")
       puts
     end
 

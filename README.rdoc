@@ -17,9 +17,11 @@ contract file (foo.yml):
       args: [user:user]
 
 invoke command:
-  % peto foo.yml
+  % mkdir generated
+  % peto foo.yml -o generated/
 
 use foo.rb:
+  $: << "generated/"
   require "foo"
   require "animal"
   require "user"
@@ -28,6 +30,7 @@ use foo.rb:
   dog = Peto::Animal.new(:name => "dog")
   user = Peto::User.new(:name => "alice", :age => 23, :animals=>[cat, dog])
 
+  # generating procedure hash
   p Peto::Foo.set_user(user) # => { :procedure=>"set_user",
                                     :args=>{ :user=>{ :name=>"alice",
                                                       :age=>23,
@@ -35,6 +38,74 @@ use foo.rb:
                                                         Peto::Animal({:name=>"cat"}),
                                                         Peto::Animal({:name=>"dog"})
                                                       ]}}}
+
+== in Rails
+
+=== setup
+
+create your new application
+  % rails new myapp
+
+add autoload_poth to config/application.rb
+  config.autoload_paths += %W(#{config.root}/generated)
+
+add including to app/controller/application_controller.rb
+  require "peto/rails/rails_controller_helper"
+
+  class ApplicationController < ActionController::Base
+    include Peto::RailsControllerHelper
+    # ...
+  end
+
+add to test/test_helper.rb
+  require "peto/rails/rails_controller_test_helper"
+
+  class ActionController::TestCase
+    include Peto::RailsControllerTestHelper
+  end
+
+add match to config/routes.rb
+  match ':controller(/:action)'
+
+=== using
+
+  % # on your rails home
+  % create contract/foo.yml
+  % mkdir generated
+  % peto contract/foo.yml -o generated/
+
+add subaction to app/controller/foo_controller.rb
+
+  # this is subaction
+  def set_user(args)
+    respond(123, "foo bar baz")
+  end
+
+subaction is an action method in imitation of rails controller.
+this has args to use likes params.
+
+post procedure name and parameters to application, be called subaction.
+in test/functional/foo_controller_test.rb
+  test "set_user" do
+    peto_post("set_user", Peto::User.new(:name=>"alice"))
+    assert_response :success
+    assert_peto_response("a"=>123, "b"=>"foo bar baz")
+  end
+
+run server
+
+  % rails server
+
+post next json to http://server/foo/
+  {
+    "procedure" : "set_user",
+    "args" : {
+      "user" : {
+        "name" : "alice"
+      }
+    }
+  }
+
 
 == Note on Patches/Pull Requests
  

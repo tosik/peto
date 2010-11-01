@@ -65,6 +65,7 @@ module Peto
     def each_procedures
       (@contract["procedures"]||[]).each do |name, procedure|
         yield name.to_method_name, args(procedure["args"])
+        yield "#{name} response".to_method_name, args(procedure["returns"])
         (procedure["errors"]||[]).each do |error|
           yield "#{name} error #{error}".to_method_name, [arg("message", "string")]
         end

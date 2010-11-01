@@ -5,11 +5,7 @@ module Peto
     extend PetoErrorable
     <%- each_procedures do |name, args| -%>
     def self.<%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)
-      <%- args.each do |arg| -%>
-      invalid_type("<%= arg[:name] %>", <%= arg[:type] %>, <%= arg[:name] %>) unless <%= arg[:name] %>.class == <%= arg[:type] %>
-      <%- end -%>
-      raise_errors unless errors.empty?
-
+      <%=name%>_valid?(<%= args.map{|arg| arg[:name]}.join(",") %>)
       return {
         :procedure => "<%=name%>",
         :args => {
@@ -18,6 +14,13 @@ module Peto
           <%- end -%>
         }
       }
+    end
+
+    def self.<%=name%>_valid?(<%= args.map{|arg| arg[:name]}.join(",") %>)
+      <%- args.each do |arg| -%>
+      invalid_type("<%= arg[:name] %>", <%= arg[:type] %>, <%= arg[:name] %>) unless <%= arg[:name] %>.class == <%= arg[:type] %>
+      <%- end -%>
+      raise_errors unless errors.empty?
     end
 
     <%- end -%>

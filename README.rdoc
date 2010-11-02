@@ -46,7 +46,7 @@ use foo.rb:
 create your new application
   % rails new myapp
 
-add autoload_poth to config/application.rb
+add autoload_paths to config/application.rb
   config.autoload_paths += %W(#{config.root}/generated)
 
 add including to app/controller/application_controller.rb

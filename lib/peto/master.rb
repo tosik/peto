@@ -1,6 +1,11 @@
 require "pathname"
 require "yaml"
 require "peto/generator"
+require "term/ansicolor"
+
+class String
+  include Term::ANSIColor
+end
 
 module Peto
   TEMPLATE_DIR = File::dirname(File::expand_path( __FILE__ )) + "/../templates"
@@ -28,14 +33,14 @@ module Peto
       print "  "
       if File.exist?(filepath)
         if File.read(filepath) == content
-          print "identical"
+          print "identical".blue.bold
         else
-          print "update   "
+          print "update   ".white.bold
         end
       else
-        print "create   "
+        print "create   ".green.bold
       end
-      print "  "
+      print " "
 
       open(filepath, "w") do |file|
         file.write(content)

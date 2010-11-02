@@ -1,0 +1,11 @@
+name: foo
+
+types:
+  animal: [name:string]
+  user: [name:string, age:integer, animals:array:animal]
+
+procedures:
+  set_user:
+    args: [user:user]
+    returns: [a:integer, b:string]
+    errors: [invalid user]

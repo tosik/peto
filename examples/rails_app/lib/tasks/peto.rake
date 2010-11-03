@@ -1,7 +1,9 @@
 require "peto"
 
 task :peto do
-  sh "peto contracts/foo.yml -o contracts/generated/"
+  peto = Peto::Master.new
+  peto.load("contracts/foo.yml")
+  peto.generate("contracts/generated/")
 end
 
 task :test => :peto

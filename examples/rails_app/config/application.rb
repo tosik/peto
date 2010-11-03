@@ -15,9 +15,6 @@ module RailsApp
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
 
-    # local peto lib. you dont need it if you install peto by gem.
-    config.autoload_paths += %W(#{config.root}/../../lib)
-
     # generated files by peto
     config.autoload_paths += %W(#{config.root}/contracts/generated)
 

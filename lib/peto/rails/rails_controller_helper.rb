@@ -36,7 +36,7 @@ module Peto
     end
 
     def error(error_name, *messages)
-      call_procedure_response(:"error_#{error_name}", messages.join(","))
+      render(:json => call_procedure_response(:"error_#{error_name}", messages.join(",")))
     end
 
 

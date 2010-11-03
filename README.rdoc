@@ -1,5 +1,31 @@
 = peto
 
+peto is a RPC code generator.
+Defining types and procedures on RPC from contract files.
+Contract file is simple YAML format.
+
+  name: foo
+  types:
+    human: [name:string, age:integer]
+  procedures:
+    find_human:
+      args: [id:integer]
+      returns: [found:human]
+      errors: [human not found, invalid id]
+
+peto generates some codes.
+ * human.rb : human's structure class
+ * foo.rb : procedure class.
+            this has find_human, find_human_response,
+            find_human_error_human_not_found, find_human_error_invalid_id
+
+Use Foo class methods to create hash and send it as JSON string for RPC.
+
+
+peto has a Rails helper module.
+Look examples/rails_app and use it, if you want to create Rails RPC server.
+
+
 == Usage
 
 installing:
@@ -31,13 +57,7 @@ use foo.rb:
   user = Peto::User.new(:name => "alice", :age => 23, :animals=>[cat, dog])
 
   # generating procedure hash
-  p Peto::Foo.set_user(user) # => { :procedure=>"set_user",
-                                    :args=>{ :user=>{ :name=>"alice",
-                                                      :age=>23,
-                                                      :animals=>[
-                                                        Peto::Animal({:name=>"cat"}),
-                                                        Peto::Animal({:name=>"dog"})
-                                                      ]}}}
+  Peto::Foo.set_user(user)
 
 == in Rails
 
@@ -96,7 +116,7 @@ run server
 
   % rails server
 
-post next json to http://server/foo/
+post next JSON to http://server/foo/
   {
     "procedure" : "set_user",
     "args" : {
@@ -105,6 +125,9 @@ post next json to http://server/foo/
       }
     }
   }
+
+this JSON string is created by
+  ActiveSupport::JSON.encode(Peto::Foo.set_user(user))
 
 
 == Note on Patches/Pull Requests

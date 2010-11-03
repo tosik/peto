@@ -35,10 +35,10 @@ module Peto
         if File.read(filepath) == content
           print "identical".blue.bold
         else
-          print "update   ".white.bold
+          print "   update".white.bold
         end
       else
-        print "create   ".green.bold
+        print "   create".green.bold
       end
       print " "
 

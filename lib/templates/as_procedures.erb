@@ -6,11 +6,10 @@
     args.map{|arg| "#{arg[:name]}:#{arg[:type]}"}.join(",")
   end
 -%>
-
-import peto.*;
-
 package peto
 {
+	import peto.*;
+
 	class <%= class_name %>
 	{
 		<%- each_procedures do |name, args| -%>

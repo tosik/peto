@@ -1,12 +1,12 @@
 <%- name = @target[:name].camelize -%>
 <%- args = @target[:args] -%>
-import peto.*;
-
 package peto
 {
-	class <%= name %>
+	import peto.*;
+
+	public class <%= name %>
 	{
-		public static function create(hash_args):<%=name%>
+		public static function create(hash_args:Object):<%=name%>
 		{
 			var instance:<%= name %> = new <%= name %>;
 			<%- args.each do |arg| -%>
@@ -22,7 +22,7 @@ package peto
 			return instance;
 		}
 
-		public function <%=name%>(<%= args.map{|arg| "#{arg[:name]}:#{arg[:type]}"}.join(",") %>)
+		public function <%=name%>(<%= args.map{|arg| "#{arg[:name]}:#{arg[:type]}=null"}.join(",") %>)
 		{
 		<%- args.each do |arg| -%>
 			this.<%= arg[:name] %> = <%= arg[:name] %>;
@@ -30,14 +30,14 @@ package peto
 		}
 
 		<%- args.each do |arg| -%>
-		private var <%= arg[:name] %>:<%= arg[:type] %>;
+		private var m_<%= arg[:name] %>:<%= arg[:type] %>;
 		public function get <%= arg[:name] %>():<%= arg[:type] %>
 		{
-			return <%= arg[:name] %>;
+			return m_<%= arg[:name] %>;
 		}
-		public function set <%= arg[:name] %>(value:<%= arg[:type] %>)
+		public function set <%= arg[:name] %>(value:<%= arg[:type] %>):void
 		{
-			<%= arg[:name] %> = value;
+			m_<%= arg[:name] %> = value;
 		}
 		<%- end -%>
 
@@ -46,12 +46,12 @@ package peto
 			var hash:Object = new Object;
 			<%- args.each do |arg| -%>
 				<%- if rb_primitive_types.include?(arg[:type].constantize) -%>
-			hash_args["<%= arg[:name]%>"] = <%=arg[:name]%>;
+			hash["<%= arg[:name]%>"] = <%=arg[:name]%>;
 				<%- elsif arg[:array_type] -%>
 			for each ( var arg:<%= arg[:array_type]%> in <%= arg[:name]%>)
-				hash_args["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash():
+				hash["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash():
 				<%- else -%>
-			hash_args["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash():
+			hash["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash():
 				<%- end -%>
 			<%- end -%>
 			return hash;

@@ -23,10 +23,21 @@ module Peto
       }.merge!(Generator.new(@contract).generate_procedure(TEMPLATE_DIR + "/#{language}_procedures.erb"))
     end
 
+    def class_filename(name, language)
+      case language
+      when "rb"
+        "#{name}.#{language}"
+      when "as"
+        "peto/#{name.capitalize}.#{language}"
+      else
+        raise "invalid language #{language.inspect}"
+      end
+    end
+
     def generate(language, output_dir=nil)
       raise "language is nil" if language.nil?
       parse(language).each do |name, content|
-        filepath = File.join(output_dir||File::dirname(@filename), language, "#{name}.#{language}")
+        filepath = File.join(output_dir||File::dirname(@filename), language, class_filename(name, language))
         write(filepath, content)
       end
     end

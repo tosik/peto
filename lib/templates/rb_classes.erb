@@ -9,7 +9,7 @@ module Peto
     def self.create(hash_args)
       instance = new
       <%- args.each do |arg| -%>
-        <%- if atomic_types.include?(arg[:type].constantize) -%>
+        <%- if rb_primitive_types.include?(arg[:type].constantize) -%>
       instance.<%=arg[:name]%> = hash_args["<%= arg[:name]%>"]
       <%- elsif arg[:array_type] -%>
       instance.<%=arg[:name]%> = hash_args["<%= arg[:name]%>"].map {|arg| <%=arg[:array_type]%>.create(arg) }

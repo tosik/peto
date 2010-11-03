@@ -18,8 +18,11 @@ class String
   end
 end
 
-def atomic_types
+def rb_primitive_types
   [Fixnum, String]
+end
+def as_primitive_types
+  ["int", "String", "Number", "uint", "Boolean"]
 end
 
 module Peto

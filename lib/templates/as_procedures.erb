@@ -24,6 +24,7 @@ package peto
 				<%- args.each do |arg| -%>
 					<%=arg[:name]%> : hashize(<%=arg[:name]%>),
 				<%- end -%>
+				}
 			}
 		}
 
@@ -38,17 +39,17 @@ package peto
 
 		<%- end -%>
 
-		public static function hashize(var:Object)
+		public static function hashize(var:Object):Object
 		{
-			if( isAtomicType?(var.class) )
+			if ( isPrimitiveType(typeof(var)) )
 				return var;
 			else
 				return var.toHash();
 		}
 
-		public static function isAtomicType(type)
+		public static function isPrimitiveType(type):Boolean
 		{
-			[<%=atomic_types.join(",")%>].indexOf?(type) != -1;
+			[<%=as_primitive_types.join(",")%>].indexOf?(type) != -1;
 		}
 	}
 }

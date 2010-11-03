@@ -14,10 +14,8 @@ Contract file is simple YAML format.
       errors: [human not found, invalid id]
 
 peto generates some codes.
- * human.rb : human's structure class
- * foo.rb : procedure class.
-            this has find_human, find_human_response,
-            find_human_error_human_not_found, find_human_error_invalid_id
+* human.rb : human's structure class
+* foo.rb : procedure class. this has find_human, find_human_response, find_human_error_human_not_found, find_human_error_invalid_id
 
 Use Foo class methods to create hash and send it as JSON string for RPC.
 

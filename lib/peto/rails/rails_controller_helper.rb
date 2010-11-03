@@ -50,9 +50,14 @@ module Peto
       peto_class.send(:"#{procedure}_valid?", args)
     end
 
-    def call_subaction(procedure, args)
-      valid_args?(procedure, args)
-      send(procedure, args)
+    def hash_to_args(procedure, hash_args)
+      peto_class.send(:"#{procedure}_hash_to_args", hash_args)
+    end
+
+    def call_subaction(procedure, hash_args)
+      args = hash_to_args(procedure, hash_args)
+      valid_args?(procedure, *args) # raise error
+      send(procedure, *args)
     end
   end
 end

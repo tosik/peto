@@ -3,8 +3,8 @@ require "peto/mixin/peto_errorable"
 module PetoClass
   include PetoErrorable
 
-  def set_by_hash(hash)
-    hash.each do |key, value|
+  def set_args(args)
+    args.each do |key, value|
       var = instance_variable_get("@#{key}")
       invalid_type(key, types[key], value) unless value.class == types[key] || value.nil?
       raise_errors unless errors.empty?

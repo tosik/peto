@@ -1,11 +1,20 @@
 require "peto/mixin/peto_errorable"
 
+<%-
+  def comma_args(args)
+    args.map{|arg| arg[:name]}.join(",")
+  end
+-%>
+
 module Peto
   class <%= class_name %>
     extend PetoErrorable
+
     <%- each_procedures do |name, args| -%>
-    def self.<%= name %>(<%= args.map{|arg| arg[:name]}.join(",") %>)
-      <%=name%>_valid?(<%= args.map{|arg| arg[:name]}.join(",") %>)
+    # <%=name%> methods
+
+    def self.<%= name %>(<%= comma_args(args) %>)
+      <%=name%>_valid?(<%= comma_args(args) %>)
       return {
         :procedure => "<%=name%>",
         :args => {
@@ -16,18 +25,31 @@ module Peto
       }
     end
 
-    def self.<%=name%>_valid?(<%= args.map{|arg| arg[:name]}.join(",") %>)
+    def self.<%=name%>_valid?(<%= comma_args(args) %>)
       <%- args.each do |arg| -%>
       invalid_type("<%= arg[:name] %>", <%= arg[:type] %>, <%= arg[:name] %>) unless <%= arg[:name] %>.class == <%= arg[:type] %>
       <%- end -%>
       raise_errors unless errors.empty?
     end
 
+    def self.<%=name%>_hash_to_args(hash_args)
+      args = []
+      <%- args.each do |arg| -%>
+      args.push(<%=arg[:type]%>.create(hash_args["<%=arg[:name]%>"]))
+      <%- end -%>
+      return args
+    end
+
+
     <%- end -%>
 
     def self.hashize(var)
-      return var if [Fixnum, String].include?(var.class)
+      return var if atomic_type?(var.class)
       var.to_hash
+    end
+
+    def self.atomic_type?(type)
+      [<%=atomic_types.join(",")%>].include?(type)
     end
   end
 end

@@ -18,6 +18,10 @@ class String
   end
 end
 
+def atomic_types
+  [Fixnum, String]
+end
+
 module Peto
   class Generator
     def initialize(contract)

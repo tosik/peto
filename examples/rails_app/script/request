@@ -1,11 +1,11 @@
 #!/bin/ruby
 
-$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "lib")))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'contracts', 'generated'))
 require "peto"
 
 require "net/http"
 require "active_support"
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'contracts', 'generated'))
 require "foo"
 require "user"
 require "animal"

@@ -1,0 +1,45 @@
+<%- name = @target[:name].camelize -%>
+<%- args = @target[:args] -%>
+import peto.*;
+
+package peto
+{
+	class <%= name %>
+	{
+		public static function create(hash_args):<%=name%>
+		{
+			var instance:<%= name %> = new <%= name %>;
+			<%- args.each do |arg| -%>
+				<%- if atomic_types.include?(arg[:type].constantize) -%>
+			instance.<%=arg[:name]%> = hash_args["<%= arg[:name]%>"];
+				<%- elsif arg[:array_type] -%>
+			for each ( var arg:Object in hash_args["<%= arg[:name]%>"])
+				instance.<%=arg[:name]%>.push(<%=arg[:array_type]%>.create(arg));
+				<%- else -%>
+			instance.<%=arg[:name]%> = <%=arg[:type]%>.create(hash_args["<%= arg[:name]%>"]);
+				<%- end -%>
+			<%- end -%>
+			return instance;
+		}
+
+		public function <%=name%>(<%= args.map{|arg| "_#{arg[:name]}:#{arg[:type]}"}.join(",") %>)
+		{
+		<%- args.each do |arg| -%>
+			<%= arg[:name] %> = _<%= arg[:name] %>;
+		<%- end -%>
+		}
+
+		<%- args.each do |arg| -%>
+		private var <%= arg[:name] %>:<%= arg[:type] %>;
+		public function get <%= arg[:name] %>():<%= arg[:type] %>
+		{
+			return <%= arg[:name] %>;
+		}
+		public function set <%= arg[:name] %>(value:<%= arg[:type] %>)
+		{
+			<%= arg[:name] %> = value;
+			validate();
+		}
+		<%- end -%>
+	}
+}

@@ -6,6 +6,8 @@ module Peto
   class RakeTask < ::Rake::TaskLib
     attr_accessor :contracts
     attr_accessor :output_dir
+    attr_accessor :languages
+
     attr_accessor :name
     attr_accessor :fail_on_error
     attr_accessor :failure_message
@@ -13,6 +15,8 @@ module Peto
     def initialize(*args)
       @contracts ||= []
       @output_dir ||= "./"
+      @languages ||= []
+
       @name ||= :peto
       @fail_on_error ||= true
 
@@ -26,15 +30,17 @@ module Peto
             puts "No contracts"
           else
             begin
-              self.contracts = [contracts] if contracts.class == String
-              contracts.each do |contract|
-                peto = Peto::Master.new
-                peto.load(contract)
-                peto.generate(output_dir)
+              languages.each do |language|
+                self.contracts = [contracts] if contracts.class == String
+                contracts.each do |contract|
+                  peto = Peto::Master.new
+                  peto.load(contract)
+                  peto.generate(language, output_dir)
+                end
               end
-            rescue
-              puts failure_message if failure_message
-              raise "peto failed" if fail_on_error
+            #rescue
+            #  puts failure_message if failure_message
+            #  raise "peto failed" if fail_on_error
             end
           end
         end

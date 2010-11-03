@@ -25,8 +25,8 @@ class TestPeto < Test::Unit::TestCase
         @peto.load("test/contracts/generating.yml")
       end
       should "returns string by loaded contract" do
-        assert_equal Hash, @peto.parse.class
-        @peto.parse.each do |name, content|
+        assert_equal Hash, @peto.parse(:rb).class
+        @peto.parse(:rb).each do |name, content|
           assert_equal String, name.class
           assert_equal String, content.class
         end
@@ -38,7 +38,7 @@ class TestPeto < Test::Unit::TestCase
     setup do
       @peto = Peto::Master.new
       @peto.load("test/contracts/generating.yml")
-      @generated = @peto.parse
+      @generated = @peto.parse(:rb)
     end
     should "be readable as ruby" do
       @generated.each do |filepath, content|

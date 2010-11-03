@@ -1,7 +1,7 @@
 require "pathname"
 require "yaml"
-require "peto/generator"
 require "term/ansicolor"
+require "peto/generator"
 
 class String
   include Term::ANSIColor
@@ -16,15 +16,16 @@ module Peto
     end
     attr_reader :contract
 
-    def parse
+    def parse(language)
       (@contract["types"]||{}).inject({}) {|result, type|
-        result.merge!(Generator.new(@contract).generate_class(TEMPLATE_DIR + "/rb_classes.erb", type))
-      }.merge!(Generator.new(@contract).generate_procedure(TEMPLATE_DIR + "/rb_procedures.erb"))
+        result.merge!(Generator.new(@contract).generate_class(TEMPLATE_DIR + "/#{language}_classes.erb", type))
+      }.merge!(Generator.new(@contract).generate_procedure(TEMPLATE_DIR + "/#{language}_procedures.erb"))
     end
 
-    def generate(output_dir=nil)
-      parse.each do |name, content|
-        filepath = File.join(output_dir||File::dirname(@filename), "#{name}.rb")
+    def generate(language, output_dir=nil)
+      raise "language is nil" if language.nil?
+      parse(language).each do |name, content|
+        filepath = File.join(output_dir||File::dirname(@filename), "#{name}.#{language}")
         write(filepath, content)
       end
     end

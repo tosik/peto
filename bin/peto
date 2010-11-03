@@ -12,10 +12,11 @@ OptionParser.new do |opt|
   opt.on("-o output directory") {|value| options[:output] = value }
   opt.parse!(ARGV)
 end
-input = ARGV.pop
+input = ARGV.shift
+language = ARGV.shift
 
 if input.nil?
-  puts "usage:\n  % peto contract.yml"
+  puts "usage:\n  % peto contract.yml rb"
   exit
 end
 
@@ -23,5 +24,5 @@ options[:output] = File.dirname(input) if options[:output].nil?
 
 peto = Peto::Master.new
 peto.load(input)
-peto.generate(options[:output])
+peto.generate(language, options[:output])
 

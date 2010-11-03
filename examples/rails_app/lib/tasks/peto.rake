@@ -1,9 +1,8 @@
-require "peto"
+require "peto/rake_task"
 
-task :peto do
-  peto = Peto::Master.new
-  peto.load("contracts/foo.yml")
-  peto.generate("contracts/generated/")
+Peto::RakeTask.new do |t|
+  t.output_dir = "contracts/generated/"
+  t.contracts  << "contracts/foo.yml"
 end
 
 task :test => :peto

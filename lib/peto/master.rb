@@ -1,5 +1,6 @@
 require "pathname"
 require "yaml"
+require "fileutils"
 require "term/ansicolor"
 require "peto/generator"
 
@@ -25,7 +26,7 @@ module Peto
     def generate(language, output_dir=nil)
       raise "language is nil" if language.nil?
       parse(language).each do |name, content|
-        filepath = File.join(output_dir||File::dirname(@filename), "#{name}.#{language}")
+        filepath = File.join(output_dir||File::dirname(@filename), language, "#{name}.#{language}")
         write(filepath, content)
       end
     end
@@ -39,6 +40,7 @@ module Peto
           print "   update".white.bold
         end
       else
+        FileUtils.mkdir_p(File.dirname(filepath))
         print "   create".green.bold
       end
       print " "

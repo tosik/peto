@@ -10,7 +10,7 @@ package peto
 		{
 			var instance:<%= name %> = new <%= name %>;
 			<%- args.each do |arg| -%>
-				<%- if rb_primitive_types.include?(arg[:type].constantize) -%>
+				<%- if as_primitive_types.include?(arg[:type]) -%>
 			instance.<%=arg[:name]%> = hash_args.<%= arg[:name]%>;
 				<%- elsif arg[:array_type] -%>
 			for each ( var arg:Object in hash_args.<%= arg[:name]%>)
@@ -22,7 +22,7 @@ package peto
 			return instance;
 		}
 
-		public function <%=name%>(<%= args.map{|arg| "#{arg[:name]}:#{arg[:type]}=null"}.join(",") %>)
+		public function <%=name%>(<%= args.map{|arg| "#{arg[:name]}:#{arg[:type]}=#{as_default_value(arg[:type])}"}.join(",") %>)
 		{
 		<%- args.each do |arg| -%>
 			this.<%= arg[:name] %> = <%= arg[:name] %>;
@@ -45,13 +45,13 @@ package peto
 		{
 			var hash:Object = new Object;
 			<%- args.each do |arg| -%>
-				<%- if rb_primitive_types.include?(arg[:type].constantize) -%>
+				<%- if as_primitive_types.include?(arg[:type]) -%>
 			hash["<%= arg[:name]%>"] = <%=arg[:name]%>;
 				<%- elsif arg[:array_type] -%>
 			for each ( var arg:<%= arg[:array_type]%> in <%= arg[:name]%>)
-				hash["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash():
+				hash["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash();
 				<%- else -%>
-			hash["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash():
+			hash["<%= arg[:name]%>"] = <%=arg[:name]%>.toHash();
 				<%- end -%>
 			<%- end -%>
 			return hash;

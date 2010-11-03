@@ -10,7 +10,7 @@ package peto
 {
 	import peto.*;
 
-	class <%= class_name %>
+	public class <%= class_name %>
 	{
 		<%- each_procedures do |name, args| -%>
 		// <%=name%> methods
@@ -20,9 +20,11 @@ package peto
 			return {
 				procedure : "<%=name%>",
 				args : {
-				<%- args.each do |arg| -%>
-					<%=arg[:name]%> : hashize(<%=arg[:name]%>),
-				<%- end -%>
+					<%= args.map {|arg|
+						as_primitive_types.include?(arg[:type]) ?
+						"#{arg[:name]} : #{arg[:name]}" :
+						"#{arg[:name]} : #{arg[:name]}.toHash()"
+					}.join(",")%>
 				}
 			}
 		}
@@ -31,24 +33,15 @@ package peto
 		{
 			var args:Array = new Array();
 			<%- args.each do |arg| -%>
+			<%- if as_primitive_types.include?(arg[:type])-%>
+			args.push(hash_args.<%=arg[:name]%>);
+			<%- else -%>
 			args.push(<%=arg[:type]%>.create(hash_args.<%=arg[:name]%>));
+			<%- end -%>
 			<%- end -%>
 			return args;
 		}
 
 		<%- end -%>
-
-		public static function hashize(var:Object):Object
-		{
-			if ( isPrimitiveType(typeof(var)) )
-				return var;
-			else
-				return var.toHash();
-		}
-
-		public static function isPrimitiveType(type):Boolean
-		{
-			[<%=as_primitive_types.join(",")%>].indexOf?(type) != -1;
-		}
 	}
 }

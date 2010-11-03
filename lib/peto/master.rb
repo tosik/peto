@@ -19,8 +19,8 @@ module Peto
 
     def parse(language)
       (@contract["types"]||{}).inject({}) {|result, type|
-        result.merge!(Generator.new(@contract).generate_class(TEMPLATE_DIR + "/#{language}_classes.erb", type))
-      }.merge!(Generator.new(@contract).generate_procedure(TEMPLATE_DIR + "/#{language}_procedures.erb"))
+        result.merge!(Generator.new(@contract, language).generate_class(TEMPLATE_DIR + "/#{language}_classes.erb", type))
+      }.merge!(Generator.new(@contract, language).generate_procedure(TEMPLATE_DIR + "/#{language}_procedures.erb"))
     end
 
     def class_filename(name, language)

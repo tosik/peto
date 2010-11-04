@@ -16,7 +16,7 @@ module RailsApp
     # config.autoload_paths += %W(#{config.root}/extras)
 
     # generated files by peto
-    config.autoload_paths += %W(#{config.root}/contracts/generated)
+    config.autoload_paths += %W(#{config.root}/contracts/generated/rb)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
